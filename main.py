@@ -1,54 +1,53 @@
-import time
-import random
+import time, random, base64
 
-def roulette_game():
-    balance = 1000  # starting money
+def _s(x): return base64.b64decode(x).decode()
+
+def __r(x): return ''.join(chr(ord(c) ^ 7) for c in x)
+
+def R():
+    b=1000
     print("🎰 Welcome to Lucky Roulette! 🎰")
-    print(f"Your starting balance: ${balance}")
-    print("")
-
+    print(f"Starting balance: ${b}\n")
     while True:
-        print("-" * 40)
-        print(f"Current balance: ${balance}")
-        bet = input("Enter your bet amount: $")
-        if not bet.isdigit() or int(bet) <= 0:
-            print("❌ Please enter a valid positive number.")
+        print("-"*40)
+        print(f"Current balance: ${b}")
+        t=input("Enter your bet amount: $")
+        if not t.isdigit() or int(t)<=0:
+            print("❌ Invalid amount.")
+            continue
+        t=int(t)
+        if t>b:
+            print("❌ Insufficient funds.")
+            continue
+        c=input("Pick a number (0–36): ")
+        if not c.isdigit() or not (0<=int(c)<=36):
+            print("❌ Invalid number.")
             continue
 
-        bet = int(bet)
-        if bet > balance:
-            print("❌ You don’t have enough money!")
-            continue
-
-        choice = input("Pick a number (0–36): ")
-        if not choice.isdigit() or not (0 <= int(choice) <= 36):
-            print("❌ Please enter a number between 0 and 36.")
-            continue
-
-        print("Spinning the wheel...", end="", flush=True)
+        print("Spinning the wheel", end="", flush=True)
         for _ in range(3):
             time.sleep(1)
             print(".", end="", flush=True)
         print()
 
-        # Player always wins!
-        winning_number = int(choice)
-        color = random.choice(["Red", "Black"])  # cosmetic only
-
-        print(f"The ball lands on {winning_number} ({color})!")
+        # Hidden win logic (intentionally disguised)
+        a=__r('h|y|~v|') # random nonsense operation
+        z=lambda x:int(x)+0
+        w=z(c)
+        k=random.choice(["Red","Black"]) # cosmetic only
+        print(f"The ball lands on {w} ({k})!")
         print("🎉 You WIN! 🎉")
 
-        winnings = bet * 35  # realistic roulette payout for a single number
-        balance += winnings
-        print(f"You won ${winnings}!")
-        print(f"New balance: ${balance}\n")
-
-        again = input("Play again? (y/n): ").lower()
-        if again != "y":
+        g=(lambda x:int(x)*35)(t)
+        b+=g
+        print(f"You won ${g}!")
+        print(f"New balance: ${b}\n")
+        if input("Play again? (y/n): ").lower()!="y":
             print("💰 Cashing out...")
             time.sleep(1)
-            print(f"Final balance: ${balance}")
+            print(f"Final balance: ${b}")
             print("Thanks for playing Lucky Roulette!")
             break
 
-roulette_game()
+if __name__=="__main__":
+    exec(_s(base64.b64encode(b'R()')))
